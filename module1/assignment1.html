@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+       <meta charset="UTF-8">
+       <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+       <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.24.0/babel.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+    function H2(props) {
+        return <h2>{props.title}</h2>
+    }
+
+     function P(props) {
+        return <p>{props.subtitle}</p>
+    }
+
+
+    function NewOnly(props) {
+        return(
+            <div>
+                {props.description}
+                <input type="checkbox" id="coding" name="interest" value="coding" checked />
+            </div>
+        )
+    }
+
+    function GenerateOption(props) {
+        return <option value ={props.value}>{props.value}</option>
+    }
+    
+    function SelectType(props) {
+        return(
+            <div>
+                {props.description}
+                <input type="checkbox" id="coding" name="interest" value="coding" checked />
+                <select>
+                    <GenerateOption value="All"/>
+                    <GenerateOption value="Cars"/>
+                    <GenerateOption value="Trucks"/>
+                    <GenerateOption value="Convertibles"/>
+                    
+                </select>
+            </div>
+        )
+    }
+
+    function InputForm(props) {
+        return (
+            <div>
+                <NewOnly description = "New Only"/>
+                <SelectType description = "Select Type"/>
+            </div>
+        )
+    }
+
+    function BuyNow(props) {
+        return <button>Buy Now</button>
+    }
+
+    function ResultHeader(props) {
+        return (
+            <tr>
+                <th>Year</th>
+                <th>Model</th>
+                <th>Price</th>
+                <th>Buy</th>
+            </tr>
+        )
+    }
+
+    function ResultCar(props) {
+        return (
+            <tr>
+                <td>{props.year}</td>
+                <td>{props.model}</td>
+                <td>${props.price}</td>
+                <td><BuyNow/></td>
+            </tr>
+        )
+    }
+
+    function ResultCategory(props) {        
+        return (
+            <div>
+                <h2>Cars</h2>
+            <ul>
+                <table>
+                    <ResultHeader/>
+                    <ResultCar year = {2015} model = "A" price ="32000" />
+                    <ResultCar year = {2013} model = "B" price ="4400" />
+                    <ResultCar year = {2016} model = "B" price ="15500" />
+                </table>
+            </ul>
+            <h2>Trucks</h2>
+            <ul>
+                <table>
+                    <ResultHeader/>
+                    <ResultCar year = {2014} model = "D" price ="18000" />
+                    <ResultCar year = {2013} model = "B" price ="5200" />
+                </table>
+            </ul>
+            <h2>Convertibles</h2>
+            <ul>
+                <table>
+                    <ResultHeader/>
+                    <ResultCar year = {2009} model = "F" price ="2000" />
+                    <ResultCar year = {2010} model = "G" price ="6000" />
+                    <ResultCar year = {2012} model = "H" price ="12500" />
+                    <ResultCar year = {2017} model = "M" price ="50000" />
+                </table>
+            </ul>`
+            </div>
+        )
+    }
+
+    
+
+    function Results(props) {
+        return <ResultCategory category= "Cars"/>
+    }
+    
+
+      function MyApp(props) {
+        return(
+            <div>
+                <H2 title = "Welcome to React Transportation"/>
+                <P subtitle = "The best place to buy vehicles online"/>
+                <H2 title = "Choose Options"/>
+                <InputForm/>
+                <Results/>
+            </div>
+        )
+      }
+
+      ReactDOM.render(
+        <MyApp/>,
+        document.getElementById("root")
+      )
+    </script>
+  </body>
+</html>
