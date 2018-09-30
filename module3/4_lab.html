@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+       <meta charset="UTF-8">
+       <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+       <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.24.0/babel.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+    function PostButton(props){
+      return <button onClick= {() => props.addStudent()}>Submit</button>
+    }
+
+
+    //////////////////////////
+    // TODO
+    //////////////////////////
+    function Student(props){
+      return <tr>
+        <td><button onClick={ () => props.deleteStudent()}>x</button></td>
+        <td>{props.name1}</td>
+        <td>{props.name2}</td>
+        <td>{props.activity}</td>
+        <td>{props.restrictions}</td>
+      </tr>
+
+    }
+    function ListStudents(props){
+      return <table>
+        <tr>
+        <th>Remove</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Activity</th>
+        <th>Restrictions</th>
+          </tr>
+          { props.students.map((item, index) =>
+            <Student name1 = {item.name1}
+                     name2 = {item.name2}
+                     activity = {item.activity}
+                     restrictions = {item.restrictions}
+                     deleteStudent = { () => props.deleteStudent(index)}
+            /> )}
+      </table>
+    }
+
+    class App extends React.Component{
+      constructor(props){
+        super(props)
+        this.state = {
+          name1: "",
+          name2: "",
+          activity: "",
+          restrictions: [],
+          students: [{
+            "name1": "DJACK",
+            "name2": "BILLARD",
+            "activity": "converting",
+            "restrictions": ["no"]
+          }
+          ]
+        }
+      }
+
+      handleChangeName1(event){
+        this.setState({name1: event.target.value})
+      }
+
+      handleChangeName2(event){
+        this.setState({name2: event.target.value})
+      }
+
+      handleActivity(event){
+        this.setState({activity: event.target.value})
+      }
+
+      handleRestriction(event){
+        var restrictionsCopy = this.state.restrictions.slice()
+        if(event.target.checked){
+          restrictionsCopy.push(event.target.value)
+        } else {
+          var index = restrictionsCopy.indexOf(event.target.value)
+          restrictionsCopy.splice(index, 1 );
+        }
+
+        this.setState({restrictions: restrictionsCopy})
+      }
+
+      addStudent(props){
+        var studentsCopy = this.state.students.slice()
+        studentsCopy.push({
+          "name1": this.state.name1,
+          "name2": this.state.name2,
+          "activity": this.state.activity,
+          "restrictions": this.state.restrictions
+        })
+        this.setState({students: studentsCopy})
+      }
+
+      deleteStudent(index){
+        var studentsCopy = this.state.students.slice()
+        studentsCopy.splice(index, 1)
+        this.setState({students: studentsCopy})
+      }
+
+      render(){
+        return(
+          <div>
+            First name
+            <input onChange = {this.handleChangeName1.bind(this)} />
+            <br />
+            Last name
+            <input onChange = {this.handleChangeName2.bind(this)} />
+            <br />
+            Select activity
+            <select onChange = {this.handleActivity.bind(this)} >
+              <option value="sci_lab">Science Lab</option>
+              <option value="swimming">swimming</option>
+              <option value="cooking">Cooking</option>
+              <option value="painting">Painting</option>
+            </select>
+            <br />
+            Check all that apply
+            <div>
+              <label>
+                <input type="checkbox" id="diet" name="user_restrictions" value="a" onChange = {this.handleRestriction.bind(this)} /> a) Dietary Restrictions
+              </label>
+              <br />
+              <label>
+                <input type="checkbox" id="physical" name="user_restrictions" value="b" onChange = {this.handleRestriction.bind(this)} /> b) Physical Disabilities
+              </label>
+              <br />
+              <label>
+                <input type="checkbox" id="medical" name="user_restrictions" value="c" onChange = {this.handleRestriction.bind(this)} /> c) Medical Needs
+              </label>
+            </div>
+            <br />
+            <PostButton addStudent = {this.addStudent.bind(this)} />
+            <ListStudents students = {this.state.students}
+                          deleteStudent = {this.deleteStudent.bind(this)}
+            />
+          </div>
+        )
+      }
+    }
+
+    ReactDOM.render(
+        <App/>,
+        document.getElementById('root')
+      )
+    </script>
+  </body>
+</html>
