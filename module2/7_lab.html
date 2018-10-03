@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+       <meta charset="UTF-8">
+       <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+       <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.24.0/babel.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      class Question{
+        constructor(question, answers, correct_idx){
+          this.question = question
+          this.answers = answers
+          this.correct_idx = correct_idx
+        }
+      }
+
+      class App extends React.Component{
+        constructor(props){
+          super(props)
+          this.questions = [
+            new Question("What is 8x1 ?", [5, 6, 7, 8], 3),
+            new Question("What is 42 - 0 ?", [0, 42, 41, 43], 1)
+          ]
+          this.state = {q_idx: 0, true_count: 0, false_count: 0}
+        }
+
+        current_question(){
+          return this.questions[this.state.q_idx]
+        }
+
+        check_response(answer_idx){
+          var answer_is_correct = (answer_idx ==  this.current_question.correct_idx)
+          if(answer_is_correct){
+            this.setState({true_count: this.state.true_count + 1})
+          } else {
+            this.setState({false_count: this.state.false_count + 1})
+          }
+
+          // Next question
+          this.setState({q_idx: this.state.q_idx + 1})
+        }
+
+        next_question(){
+          this.setState({q_idx: this.state.q_idx + 1})
+        }
+
+        render(){
+          return <div>
+            <h1>{ this.current_question().question}</h1>
+            <button onClick = { () => this.check_response(0)}>{ this.current_question().answers[0]}</button>
+            <button onClick = { () => this.check_response(1)}>{ this.current_question().answers[1]}</button>
+            <button onClick = { () => this.check_response(2)}>{ this.current_question().answers[2]}</button>
+            <button onClick = { () => this.check_response(3)}>{ this.current_question().answers[3]}</button>
+          <div>
+          </div>
+          <div>
+            <h2>Correct: {this.state.true_count}</h2>
+            <h2>Incorrect: {this.state.false_count}</h2>
+          </div>
+
+          </div>
+        }
+
+      }
+
+      ReactDOM.render(
+          <App/>,
+          document.getElementById('root')
+      )
+    </script>
+  </body>
+</html>
